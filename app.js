@@ -9,16 +9,16 @@ const logger = require('./utils/logger')
 
 const mongoUrl = config.dbUrl
 const mongoConfig = {
-    useUnifiedTopology:true,
-    useNewUrlParser:true,
-    useCreateIndex:true,
-    useFindAndModify: false
-  }
+  useUnifiedTopology:true,
+  useNewUrlParser:true,
+  useCreateIndex:true,
+  useFindAndModify: false
+}
 
 mongoose.connect(mongoUrl,mongoConfig)
 
 const db = mongoose.connection
-db.once('open', () =>{ logger.info('db connection sucessful')})
+db.once('open', () => { logger.info('db connection sucessful')})
 db.on('error',logger.info)
 
 app.use(cors())
