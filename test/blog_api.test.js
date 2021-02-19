@@ -77,10 +77,19 @@ describe('update a blog',() => {
       .put(`/api/blogs/${blogToUpdate.id}`)
       .send(noBlogLikes)
       .expect(404)
-      
+    const likesUpdate = { likes: 30 }
+
     const blogsAtEnd = await helper.blogsInDB()
     const titles = blogsAtEnd.map(blog => blog.title)
     expect(titles).not.toContain(noBlogLikes.title)
+
+    const response= await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(likesUpdate)
+      .expect(200)
+      .expect('Content-Type',/application\/json/)
+    const latestBlogs = await helper.blogsInDB()
+    expect(response.body.likes).toBe(latestBlogs[0].likes)
   })
 })
 test('delete a blog',async () => {
