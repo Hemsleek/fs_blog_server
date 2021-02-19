@@ -1,12 +1,17 @@
 const config = require('./utils/config')
 const express = require('express')
 const app = express()
+require('express-async-errors')
 const helmet = require('helmet')
 const cors = require('cors')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
-const router = require('./controllers/blogs')
 const logger = require('./utils/logger')
+const middleware = require('./utils/middleware')
+
+const blogRouter = require('./controllers/blogs')
+const userRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 app.use(helmet())
 const mongoUrl = config.dbUrl
@@ -29,6 +34,10 @@ morgan.token('body' , (req) => JSON.stringify(req.body))
 
 if(process.env.NODE_ENV !== 'test') app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-app.use('/api/blogs', router)
+app.use('/api/blogs', blogRouter)
+app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
+
+app.use(middleware.errorHandler)
 
 module.exports = app

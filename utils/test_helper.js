@@ -9,7 +9,7 @@ const blogsInDB = async() => {
   return blogs
 }
 const nonExistingId = async() => {
-  const newBlog = new Blog({ title:'i\'m at war', author:'asiyanbi mubashir',likes:10,url:'https:hemsleek.com' })
+  const newBlog = new Blog({ title:'i\'m at war', author:'asiyanbi mubashir',likes:10,url:'https://hemsleek.com' })
   await newBlog.save()
   await newBlog.remove()
 
