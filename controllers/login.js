@@ -12,7 +12,7 @@ router.post('/',async(req, res) => {
   if(!(user && passwordCheck )) return res.status(404).json({ error: 'invalid name/password ' })
 
   const tokenData ={
-    username:user.usernme,
+    username:user.username,
     id:user.id
   }
   const token = jwt.sign(tokenData,tokenSecret)
