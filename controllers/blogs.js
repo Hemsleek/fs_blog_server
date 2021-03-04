@@ -38,7 +38,7 @@ router.delete('/:id', async (request, response) => {
   if (!request.token || !decodedToken.id) return response.status(401).json({ error: 'token missing or invalid' })
   const { id } = request.params
   const blogToDelete = await Blog.findById(id)
-  if(decodedToken.id!==blogToDelete.user) return response.status(404).send({error:'permission denied'})
+  if(decodedToken.id!==blogToDelete.user) return response.status(401).send({error:'permission denied,unauthorized'})
   await blogToDelete.remove()
   response.status(200).end()
 })
