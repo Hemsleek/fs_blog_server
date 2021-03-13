@@ -32,6 +32,14 @@ test('returned blogs should contain id',async() => {
 
   expect(response.body[3].id).toBeDefined()
 })
+test('blog without likes defaults to zero',async() => {
+  const noLikesBlog = { title: 'arigato masarimasem', author: 'ichimaru gin',url:'http://welcome.com' }
+  if(!noLikesBlog.likes) noLikesBlog.likes=0
+  await api
+    .post('/api/blogs')
+    .send(noLikesBlog)
+    .expect(201)
+})
 
 test('a valid blog can be added',async() => {
   const newBlog = { title: 'arigato masarimasem', author: 'ichimaru gin', url: 'https://reactpatterns.com/', likes: 7 }
