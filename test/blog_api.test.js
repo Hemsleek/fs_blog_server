@@ -33,6 +33,12 @@ test('returned blogs should contain id',async() => {
   expect(response.body[3].id).toBeDefined()
 })
 test('blog without likes defaults to zero',async() => {
+  const userData = { username:'hemsleek',password:'rastogi' }
+  const user = await api
+    .post('/api/login')
+    .send(userData)
+    .expect(200)
+
   const noLikesBlog = { title: 'arigato masarimasem', author: 'ichimaru gin',url:'http://welcome.com' }
   if(!noLikesBlog.likes) noLikesBlog.likes=0
   await api
