@@ -46,7 +46,7 @@ test('blog without likes defaults to zero',async() => {
     .send(noLikesBlog)
     .expect(201)
 })
-
+yar
 test('a valid blog can be added',async() => {
   const newBlog = { title: 'arigato masarimasem', author: 'ichimaru gin', url: 'https://reactpatterns.com/', likes: 7 }
   await api

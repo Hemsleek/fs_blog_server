@@ -15,9 +15,11 @@ router.post('/', async (request, response) => {
   if (!request.token || !decodedToken.id) return response.status(401).json({ error: 'token missing or invalid' })
   const user = await User.findById(decodedToken.id)
   const { title, author, url } = request.body
+  let likes = request.body.likes
+  if(!likes) likes=0
   if (!title || !url) return response.status(400).end()
   const newBlog = new Blog({
-    title, author, url, likes:0, user: user.id
+    title, author, url, likes, user: user.id
   })
   const savedBlog = await newBlog.save()
   user.blogs = user.blogs.concat(savedBlog.id)
