@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 const router = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -36,13 +37,22 @@ router.put('/:id', async (request, response) => {
 })
 
 router.delete('/:id', async (request, response) => {
-  const decodedToken = jwt.verify(request.token, tokenSecret)
-  if (!request.token || !decodedToken.id) return response.status(401).json({ error: 'token missing or invalid' })
-  const { id } = request.params
-  const blogToDelete = await Blog.findById(id)
-  if(decodedToken.id!==blogToDelete.user) return response.status(401).send({ error:'permission denied,unauthorized' })
-  await blogToDelete.remove()
-  response.status(200).end()
+  try {
+    if (!request.token) return response.status(401).json({ error: 'token missing' })
+    const decodedToken = jwt.verify(request.token, tokenSecret)
+    console.log(decodedToken)
+    if (!decodedToken.id) return response.status(401).json({ error: 'token invalid' })
+
+    const { id } = request.params
+    const blogToDelete = await Blog.findById(id)
+    console.log({ blogAuthorId: blogToDelete.user, same: blogToDelete.user == decodedToken.id })
+    if(decodedToken.id !== blogToDelete.user) return response.status(401).send('unauthorized to delete')
+    await blogToDelete.remove()
+    response.status(200).end()
+
+  } catch (error) {
+    response.status(500).send('internal server error').end() }
+
 })
 
 module.exports = router
