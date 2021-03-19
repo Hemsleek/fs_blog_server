@@ -40,13 +40,12 @@ router.delete('/:id', async (request, response) => {
   try {
     if (!request.token) return response.status(401).json({ error: 'token missing' })
     const decodedToken = jwt.verify(request.token, tokenSecret)
-    console.log(decodedToken)
     if (!decodedToken.id) return response.status(401).json({ error: 'token invalid' })
 
     const { id } = request.params
     const blogToDelete = await Blog.findById(id)
-    console.log({ blogAuthorId: blogToDelete.user, same: blogToDelete.user == decodedToken.id })
-    if(decodedToken.id !== blogToDelete.user) return response.status(401).send('unauthorized to delete')
+    if(decodedToken.id !== blogToDelete.user.toString()) return response.status(401).send('unauthorized to delete')
+
     await blogToDelete.remove()
     response.status(200).end()
 
