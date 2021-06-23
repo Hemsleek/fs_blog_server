@@ -1,9 +1,11 @@
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcrypt')
+// const { signUpPolicy } = require('../policies')
 
-router.post('/',async(request, response) => {
+router.post('/', async(request, response) => {
   const body = request.body
+  if(!body.password) return response.status(404).json({ error:'Bad Request' })
 
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
