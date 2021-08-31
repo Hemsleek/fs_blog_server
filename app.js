@@ -32,7 +32,7 @@ app.use(cors())
 app.use(express.json())
 morgan.token('body' , (req) => JSON.stringify(req.body))
 
-if(process.env.NODE_ENV !== 'test') app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+if( config.env !== 'test') app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.use(middleware.tokenExtractor)
 
